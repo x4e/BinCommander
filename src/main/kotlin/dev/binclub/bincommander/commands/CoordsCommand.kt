@@ -13,7 +13,7 @@ class CoordsCommand(instance: MinecraftAccountInstance): Command("coords", insta
 	override fun invoke(message: Discord.Message, account: MinecraftUserConfig, args: List<String>) {
 		val bot = instance.bot
 		if (bot != null) {
-			message.author.dmChannel.send("", options = MessageOptions().apply {
+			message.reply("", options = MessageOptions().apply {
 				reply = message.author
 				embed = Discord.MessageEmbed().apply {
 					val pos = bot.entity.position
