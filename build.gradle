@@ -1,0 +1,22 @@
+plugins {
+    id 'org.jetbrains.kotlin.js' version '1.3.72'
+}
+
+group 'dev.binclub'
+version '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation npm("discord.js", "12.2.0")
+    implementation npm("mineflayer", "2.15.0")
+    implementation npm("prismarine-tokens", "1.0.3")
+    implementation npm("exit-hook", "2.2.0")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-js"
+}
+
+kotlin.target.nodejs { }
+compileKotlinJs.kotlinOptions.moduleKind = "commonjs"
