@@ -1,6 +1,5 @@
 .gradle/
 .idea/
 build/
-gradle/
 bot_tokens.json
 config.json
