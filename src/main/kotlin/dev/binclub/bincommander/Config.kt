@@ -18,6 +18,8 @@ external class DiscordConfig {
 
 external class UserConfig {
 	val discordID: String
+	val spamdelay: Int
+	val spam: Array<String>
 	val mcAccounts: Array<MinecraftUserConfig>
 }
 
