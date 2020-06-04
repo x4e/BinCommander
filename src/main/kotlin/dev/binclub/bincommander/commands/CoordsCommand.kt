@@ -1,6 +1,5 @@
 package dev.binclub.bincommander.commands
 
-import dev.binclub.bincommander.MinecraftAccountInstance
 import dev.binclub.bincommander.MinecraftUserConfig
 import dev.binclub.bincommander.interop.Discord
 import dev.binclub.bincommander.interop.MessageOptions
@@ -9,9 +8,9 @@ import dev.binclub.bincommander.interop.toFixed
 /**
  * @author cookiedragon234 30/May/2020
  */
-class CoordsCommand(instance: MinecraftAccountInstance): Command("coords", instance) {
-	override fun invoke(message: Discord.Message, account: MinecraftUserConfig, args: List<String>) {
-		val bot = instance.bot
+class CoordsCommand(user: MinecraftUserConfig): Command("coords", user) {
+	override fun invoke(message: Discord.Message, args: List<String>) {
+		val bot = user.bot
 		if (bot != null) {
 			message.reply("", options = MessageOptions().apply {
 				reply = message.author
@@ -30,5 +29,10 @@ class CoordsCommand(instance: MinecraftAccountInstance): Command("coords", insta
 				}
 			})
 		}
+	}
+	
+	override fun deserialize(obj: dynamic) {
+	}
+	override fun serialize(obj: dynamic) {
 	}
 }

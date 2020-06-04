@@ -7,13 +7,7 @@ import dev.binclub.bincommander.interop.*
  * @author cookiedragon234 29/May/2020
  */
 object BinCommander {
-	val config = JSON.parse<BinCommanderConfig>(Fs.readFileSync("config.json", "utf8")).also {
-		it.users.forEach {
-			it.mcAccounts.forEach {
-				it.instance = MinecraftAccountInstance()
-			}
-		}
-	}
+	val config = readConfig()
 	val client = Discord.Client()
 	
 	init {
@@ -24,13 +18,7 @@ object BinCommander {
 		val handler = {
 			if (!shutdown) {
 				shutdown = true
-				Fs.writeFileSync("config.json", JSON.stringify(config, { key, value ->
-					if (key.endsWith("instance")) {
-						undefined
-					} else {
-						value
-					}
-				}, 4))
+				writeConfig()
 			}
 		}
 		Process.on("SIGINT", handler)
@@ -50,17 +38,18 @@ object BinCommander {
 		client.on("message") { message: Discord.Message ->
 			if (!message.author.bot && message.content.startsWith(config.discord.prefix)) {
 				val id = message.author.id
-				for (user in config.users) {
-					if (user.discordID == id) {
-						val command = message.content.substringBefore(' ').substring(1)
-						val args = message.content.substringAfter(' ').split(' ')
-						val username = if (args.isNotEmpty()) args[0] else null
-						val mcAccount = if (username != null) user.mcAccounts.firstOrNull { it.mcName == username } else null
-						if (mcAccount == null) {
-							CommandManager.invokeStaticCommand(message, command, args)
-						} else {
-							mcAccount.instance.commands.invoke(mcAccount, message, command, args)
-						}
+				val user = config.users.firstOrNull { it.discordID == id }
+				if (user == null) {
+					// User is not registered
+				} else {
+					val command = message.content.substringBefore(' ').substring(config.discord.prefix.length)
+					val args = message.content.substringAfter(' ').split(' ')
+					val username = if (args.isNotEmpty()) args[0] else null
+					val mcAccount = if (username != null) user.mcAccounts.firstOrNull { it.mcName == username } else null
+					if (mcAccount == null) {
+						CommandManager.invokeStaticCommand(message, command, args)
+					} else {
+						mcAccount.commands.invoke(message, command, args)
 					}
 				}
 			}

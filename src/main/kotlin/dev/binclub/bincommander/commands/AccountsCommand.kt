@@ -1,8 +1,6 @@
 package dev.binclub.bincommander.commands
 
 import dev.binclub.bincommander.BinCommander
-import dev.binclub.bincommander.MinecraftAccountInstance
-import dev.binclub.bincommander.UserConfig
 import dev.binclub.bincommander.interop.Discord
 import dev.binclub.bincommander.interop.MessageOptions
 
@@ -27,5 +25,10 @@ object AccountsCommand: SingletonCommand("accounts") {
 				}
 			}
 		})
+	}
+	
+	override fun deserialize(obj: dynamic) {
+	}
+	override fun serialize(obj: dynamic) {
 	}
 }

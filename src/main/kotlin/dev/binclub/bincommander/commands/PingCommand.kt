@@ -1,8 +1,5 @@
 package dev.binclub.bincommander.commands
 
-import dev.binclub.bincommander.MinecraftAccountInstance
-import dev.binclub.bincommander.MinecraftUserConfig
-import dev.binclub.bincommander.UserConfig
 import dev.binclub.bincommander.interop.*
 import dev.binclub.bincommander.interop.MinecraftProtocol.NewPingResult
 import dev.binclub.bincommander.interop.MinecraftProtocol.OldPingResult
@@ -110,5 +107,10 @@ object PingCommand: SingletonCommand("ping") {
 				}
 			})
 		}
+	}
+	
+	override fun deserialize(obj: dynamic) {
+	}
+	override fun serialize(obj: dynamic) {
 	}
 }

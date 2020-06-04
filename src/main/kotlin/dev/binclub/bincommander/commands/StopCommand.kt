@@ -12,4 +12,9 @@ object StopCommand: SingletonCommand("stop") {
 			Process.exit(0)
 		}
 	}
+	
+	override fun deserialize(obj: dynamic) {
+	}
+	override fun serialize(obj: dynamic) {
+	}
 }

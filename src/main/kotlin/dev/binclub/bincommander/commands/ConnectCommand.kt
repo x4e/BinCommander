@@ -1,23 +1,20 @@
 package dev.binclub.bincommander.commands
 
-import dev.binclub.bincommander.MinecraftAccountInstance
 import dev.binclub.bincommander.MinecraftUserConfig
-import dev.binclub.bincommander.UserConfig
 import dev.binclub.bincommander.interop.*
-import dev.binclub.bincommander.modules.ModuleManager
 import dev.binclub.bincommander.utils.betterToString
 
 /**
  * @author cookiedragon234 29/May/2020
  */
-class ConnectCommand(instance: MinecraftAccountInstance): Command("connect", instance) {
+class ConnectCommand(user: MinecraftUserConfig): Command("connect", user) {
 	@Suppress("UnsafeCastFromDynamic")
-	override fun invoke(message: Discord.Message, account: MinecraftUserConfig, args: List<String>) {
+	override fun invoke(message: Discord.Message, args: List<String>) {
 		if (args.size >= 2) {
 			val ip = args[1]
 			val port = if (args.size > 2) args[2].toInt() else 25565
 			
-			if (account.clientToken != null) {
+			if (user.clientToken != null) {
 				val originMessage = message.reply("", MessageOptions().apply {
 					reply = message.author
 					embed = Discord.MessageEmbed().apply {
@@ -26,37 +23,50 @@ class ConnectCommand(instance: MinecraftAccountInstance): Command("connect", ins
 				})
 				try {
 					Mineflayer.createBot(MineflayerOptions(
-						username = account.user,
-						password = account.pass,
+						username = user.user,
+						password = user.pass,
 						host = ip,
-						clientToken = account.clientToken,
-						accessToken = account.accessToken,
+						clientToken = user.clientToken,
+						accessToken = user.accessToken,
 						version = "1.12.2",
 						viewDistance = "far"
 					).asDynamic()).let { bot ->
 						println("Created bot")
-						account.instance.setupNewBot(bot)
+						user.setupNewBot(bot)
 						bot.on("error") { err: Any ->
-							println("ERROR: $err")
+							originMessage.then {
+								it.edit(MessageEditOptions().apply {
+									embed = Discord.MessageEmbed().apply {
+										setTitle("Error")
+										var str = err.toString()
+										if (str == "[object Object]") {
+											str = err.betterToString()
+										}
+										addField("Reason", str)
+										setColor("RED")
+									}
+								})
+							}
 							println(err.betterToString())
 						}
 						bot.on("kicked") { reason: String, loggedIn: Boolean ->
 							println("Kicked " + reason.betterToString() + " " + loggedIn.betterToString())
 							val message = JSON.parse<dynamic>(reason)
-							message.reply("", MessageOptions().apply {
-								reply = message.author
-								embed = Discord.MessageEmbed().apply {
-									setTitle("I was kicked!")
-									addField("Reason", message?.text?.toString() ?: reason)
-									setColor("RED")
-								}
-							})
+							originMessage.then {
+								it.edit(MessageEditOptions().apply {
+									embed = Discord.MessageEmbed().apply {
+										setTitle("I was kicked!")
+										addField("Reason", message?.text?.toString() ?: reason)
+										setColor("RED")
+									}
+								})
+							}
 						}
 						bot.on("login") {
 							originMessage.then {
 								it.edit(MessageEditOptions().apply {
 									embed = Discord.MessageEmbed().apply {
-										addField("Success", "${account.mcName} has logged in on $ip:$port")
+										addField("Success", "${user.mcName} has logged in on $ip:$port")
 										setColor("GREEN")
 									}
 								})
@@ -66,7 +76,7 @@ class ConnectCommand(instance: MinecraftAccountInstance): Command("connect", ins
 							originMessage.then {
 								it.edit(MessageEditOptions().apply {
 									embed = Discord.MessageEmbed().apply {
-										addField("Success", "${account.mcName} has spawned in on $ip:$port")
+										addField("Success", "${user.mcName} has spawned in on $ip:$port")
 										setColor("GREEN")
 									}
 								})
@@ -109,5 +119,10 @@ class ConnectCommand(instance: MinecraftAccountInstance): Command("connect", ins
 				}
 			})
 		}
+	}
+	
+	override fun deserialize(obj: dynamic) {
+	}
+	override fun serialize(obj: dynamic) {
 	}
 }

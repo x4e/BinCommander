@@ -1,6 +1,5 @@
 package dev.binclub.bincommander.commands
 
-import dev.binclub.bincommander.MinecraftAccountInstance
 import dev.binclub.bincommander.MinecraftUserConfig
 import dev.binclub.bincommander.interop.Discord
 import dev.binclub.bincommander.interop.MessageOptions
@@ -10,9 +9,9 @@ import dev.binclub.bincommander.modules.TpsCounterModule
 /**
  * @author cookiedragon234 30/May/2020
  */
-class VitalsCommand(instance: MinecraftAccountInstance): Command("vitals", instance) {
-	override fun invoke(message: Discord.Message, account: MinecraftUserConfig, args: List<String>) {
-		val bot = account.instance.bot
+class VitalsCommand(user: MinecraftUserConfig): Command("vitals", user) {
+	override fun invoke(message: Discord.Message, args: List<String>) {
+		val bot = user.bot
 		
 		if (bot != null) {
 			message.reply("", MessageOptions().apply {
@@ -26,7 +25,7 @@ class VitalsCommand(instance: MinecraftAccountInstance): Command("vitals", insta
 					addField("Mode", gameState.gameMode)
 					addField("Dimension", gameState.dimension)
 					addField("Latency", bot._client.latency)
-					val tps = instance.modules[TpsCounterModule::class.js]
+					val tps = user.modules[TpsCounterModule::class.js]
 					addField("TPS", tps.getTps().toFixed(2))
 					setColor("GREEN")
 				}
@@ -40,5 +39,10 @@ class VitalsCommand(instance: MinecraftAccountInstance): Command("vitals", insta
 				}
 			})
 		}
+	}
+	
+	override fun deserialize(obj: dynamic) {
+	}
+	override fun serialize(obj: dynamic) {
 	}
 }

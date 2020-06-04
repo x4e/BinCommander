@@ -11,4 +11,8 @@ object ProxyCommand: SingletonCommand("proxy") {
 		TODO("Not yet implemented")
 	}
 	
+	override fun deserialize(obj: dynamic) {
+	}
+	override fun serialize(obj: dynamic) {
+	}
 }
