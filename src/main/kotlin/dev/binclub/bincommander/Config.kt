@@ -6,6 +6,7 @@ import dev.binclub.bincommander.commands.CommandManager
 import dev.binclub.bincommander.interop.Fs
 import dev.binclub.bincommander.interop.Mineflayer
 import dev.binclub.bincommander.modules.ModuleManager
+import dev.binclub.bincommander.utils.betterToString
 
 /**
  * @author cookiedragon234 29/May/2020
@@ -18,7 +19,10 @@ interface Serializable {
 }
 
 fun <T: Serializable> T.alsoDeserialize(obj: dynamic): T = this.also { this.deserialize(obj) }
-fun <T: Serializable> T.alsoSerialize(obj: dynamic): dynamic = obj.also { this.deserialize(obj) }
+fun <T: Serializable> T.alsoSerialize(obj: dynamic): dynamic {
+	serialize(obj)
+	return obj
+}
 
 private const val configFile = "config.json"
 private const val configCharset = "utf8"
@@ -29,6 +33,7 @@ fun readConfig(): BinCommanderConfig {
 }
 
 fun writeConfig() {
+	println("Wrote config")
 	Fs.writeFileSync("config.json", JSON.stringify(BinCommander.config.alsoSerialize(object {}), space = 4))
 }
 
@@ -40,8 +45,8 @@ class BinCommanderConfig: Serializable {
 		this.users = (obj.users as Array<UserConfig>).mapTo(ArrayList()) { UserConfig().alsoDeserialize(it) }
 	}
 	override fun serialize(obj: dynamic) {
-		obj.discord = this.discord.serialize(object {})
-		obj.users = this.users.map { it.serialize(object {}) }
+		obj.discord = this.discord.alsoSerialize(object {})
+		obj.users = this.users.map { it.alsoSerialize(object {}) }
 	}
 }
 
@@ -76,7 +81,7 @@ class UserConfig: Serializable {
 	}
 	override fun serialize(obj: dynamic) {
 		obj.discordID = this.discordID
-		obj.mcAccounts = this.mcAccounts
+		obj.mcAccounts = this.mcAccounts.map { it.alsoSerialize(object {}) }
 	}
 }
 
@@ -114,7 +119,7 @@ class MinecraftUserConfig: Serializable {
 		obj.clientToken = this.clientToken
 		obj.accessToken = this.accessToken
 		obj.mcName = this.mcName
-		obj.commands = this.commands.serialize(object {})
-		obj.modules = this.modules.serialize(object {})
+		obj.commands = this.commands.alsoSerialize(object {})
+		obj.modules = this.modules.alsoSerialize(object {})
 	}
 }

@@ -16,6 +16,7 @@ object BinCommander {
 		
 		var shutdown = false
 		val handler = {
+			println("Shutdown handler")
 			if (!shutdown) {
 				shutdown = true
 				writeConfig()

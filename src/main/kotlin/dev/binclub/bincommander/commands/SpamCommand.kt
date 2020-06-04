@@ -15,7 +15,7 @@ class SpamCommand(user: MinecraftUserConfig) : Command("spam", user) {
 		message.reply("", options = MessageOptions().apply {
 			reply = message.author
 			embed = Discord.MessageEmbed().apply {
-				addField("Success", "Spam has been " + if (module.enabled) "enabled" else "disabled")
+				addField("Success", "Spammer has been " + if (module.enabled) "enabled" else "disabled")
 				setColor(if (module.enabled) "GREEN" else "RED")
 			}
 		})

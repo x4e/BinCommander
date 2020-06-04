@@ -24,22 +24,31 @@ class ModuleManager(val instance: MinecraftUserConfig): Serializable {
 	override fun deserialize(obj: dynamic) {
 		if (obj == null) return
 		modules.forEach {
-			val dyn = js("obj[it.name]")
+			val lObj = obj
+			val dyn = js("lObj[it.name]")
 			it.alsoDeserialize(dyn)
 		}
 	}
 	override fun serialize(obj: dynamic) {
 		if (obj == null) return
 		modules.forEach {
+			val lObj = obj
 			val dyn = it.alsoSerialize(object {})
-			js("obj[it.name] = dyn")
+			js("lObj[it.name] = dyn")
 		}
 	}
 }
 
-abstract class Module(val instance: MinecraftUserConfig): Serializable {
+abstract class Module(val name: String, val instance: MinecraftUserConfig): Serializable {
 	open fun onBotStart(bot: Bot) {}
 }
-abstract class ToggleableModule(instance: MinecraftUserConfig): Module(instance) {
+abstract class ToggleableModule(name: String, instance: MinecraftUserConfig): Module(name, instance) {
 	var enabled: Boolean = false
+	
+	override fun deserialize(obj: dynamic) {
+		this.enabled = obj.enabled
+	}
+	override fun serialize(obj: dynamic) {
+		obj.enabled = this.enabled
+	}
 }

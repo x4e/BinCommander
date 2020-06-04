@@ -8,7 +8,7 @@ import dev.binclub.bincommander.utils.Timer
 /**
  * @author Robeart 1/06/2020
  */
-class SpammerModule(instance: MinecraftUserConfig) : ToggleableModule(instance) {
+class SpammerModule(instance: MinecraftUserConfig) : ToggleableModule("Spammer", instance) {
 	private val timer = Timer()
     
     var spamDelay: Int = 10000 // 10 seconds
@@ -26,10 +26,12 @@ class SpammerModule(instance: MinecraftUserConfig) : ToggleableModule(instance) 
 	}
 	
 	override fun deserialize(obj: dynamic) {
+		super.deserialize(obj)
 		this.spamDelay = obj.spamDelay
 		this.messages = (obj.messages as Array<String>).toMutableList()
 	}
 	override fun serialize(obj: dynamic) {
+		super.serialize(obj)
 		obj.spamDelay = this.spamDelay
 		obj.messages = this.messages.toTypedArray()
 	}

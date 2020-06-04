@@ -8,7 +8,7 @@ import kotlin.js.Date
 /**
  * @author cookiedragon234 30/May/2020
  */
-class TpsCounterModule(user: MinecraftUserConfig): Module(user) {
+class TpsCounterModule(user: MinecraftUserConfig): Module("TpsCounter", user) {
 	private val tps = FloatArray(20) { 20f }
 	private var lastUpdate: Double = -1.0
 	private var next: Int = 0

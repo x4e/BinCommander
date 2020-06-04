@@ -62,15 +62,17 @@ class CommandManager(val instance: MinecraftUserConfig): Serializable {
 	override fun deserialize(obj: dynamic) {
 		if (obj == null) return
 		commands.forEach {
-			val dyn = js("obj[it.name]")
+			val lObj = obj
+			val dyn = js("lObj[it.name]")
 			it.alsoDeserialize(dyn)
 		}
 	}
 	override fun serialize(obj: dynamic) {
 		if (obj == null) return
 		commands.forEach {
+			val lObj = obj
 			val dyn = it.alsoSerialize(object {})
-			js("obj[it.name] = dyn")
+			js("lObj[it.name] = dyn")
 		}
 	}
 }
