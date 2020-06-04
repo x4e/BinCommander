@@ -1,9 +1,6 @@
 package dev.binclub.bincommander.commands
 
-import dev.binclub.bincommander.MinecraftUserConfig
-import dev.binclub.bincommander.Serializable
-import dev.binclub.bincommander.alsoDeserialize
-import dev.binclub.bincommander.alsoSerialize
+import dev.binclub.bincommander.*
 import dev.binclub.bincommander.interop.Discord
 import dev.binclub.bincommander.interop.MessageOptions
 import kotlin.js.Json
@@ -45,7 +42,8 @@ class CommandManager(val instance: MinecraftUserConfig): Serializable {
 		DisconnectCommand(instance),
 		TpsCommand(instance),
 		VitalsCommand(instance),
-		CoordsCommand(instance)
+		CoordsCommand(instance),
+		SpamCommand(instance)
 	)
 	
 	operator fun <T: Command> get(klass: JsClass<T>): T = commands.firstOrNull { it::class.js == klass }!! as T
