@@ -9,7 +9,8 @@ import dev.binclub.bincommander.interop.Mineflayer.Bot
  */
 class ModuleManager(val instance: MinecraftAccountInstance) {
 	val modules = arrayOf<Module>(
-		TpsCounterModule(instance)
+		TpsCounterModule(instance),
+		SpammerModule(instance)
 	)
 	
 	operator fun <T: Module> get(klass: JsClass<T>): T = modules.firstOrNull { it::class.js == klass }!! as T
