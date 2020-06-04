@@ -50,13 +50,16 @@ class BinCommanderConfig: Serializable {
  */
 class DiscordConfig: Serializable {
 	lateinit var token: String
+	lateinit var admin: String
 	lateinit var prefix: String
 	override fun deserialize(obj: dynamic) {
 		this.token = obj.token
+		this.admin = obj.admin
 		this.prefix = obj.prefix
 	}
 	override fun serialize(obj: dynamic) {
 		obj.token = this.token
+		obj.admin = this.admin
 		obj.prefix = this.prefix
 	}
 }

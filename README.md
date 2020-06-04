@@ -30,6 +30,11 @@ Create `config.json` in the root repository folder, with the following template:
     "users": [
         {
             "discordID": "YOUR_DISCORD_USER_ID",
+			"spamdelay": 60,
+            "spam": [
+                "Text",
+                "More text"
+            ],
             "mcAccounts": [
                 {
                     "mcName": "MinecraftUsername1",
