@@ -12,15 +12,24 @@ import dev.binclub.bincommander.utils.betterToString
  * @author cookiedragon234 29/May/2020
  */
 interface Serializable {
-	@Deprecated("use alsoDeserialize")
 	fun deserialize(obj: dynamic) // Initialises this object with the serialized obj
-	@Deprecated("use alsoSerialize")
 	fun serialize(obj: dynamic) // Serializes itself into the given obj
 }
 
-fun <T: Serializable> T.alsoDeserialize(obj: dynamic): T = this.also { this.deserialize(obj) }
+fun <T: Serializable> T.alsoDeserialize(obj: dynamic): T  {
+	try {
+		this.deserialize(obj)
+	} catch (t: Throwable) {
+		console.log(t)
+	}
+	return this
+}
 fun <T: Serializable> T.alsoSerialize(obj: dynamic): dynamic {
-	serialize(obj)
+	try {
+		serialize(obj)
+	} catch (t: Throwable) {
+		console.log(t)
+	}
 	return obj
 }
 

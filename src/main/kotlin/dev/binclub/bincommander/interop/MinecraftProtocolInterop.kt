@@ -135,6 +135,7 @@ external class MinecraftProtocol {
 	companion object {
 		val supportedVersions: Array<String>
 		fun createServer(options: ServerOptions): Server
+		fun createServer(options: dynamic): Server
 		fun createClient(options: ClientOptions): Client
 		fun createSerializer(options: SerializerOptions): Any
 		fun createDeserializer(options: SerializerOptions): Any
