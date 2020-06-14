@@ -14,6 +14,7 @@ dependencies {
     implementation npm("mineflayer", "2.15.0")
     implementation npm("prismarine-tokens", "1.0.3")
     implementation npm("exit-hook", "2.2.0")
+    implementation npm("xmlhttprequest")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
     testImplementation "org.jetbrains.kotlin:kotlin-test-js"
 }

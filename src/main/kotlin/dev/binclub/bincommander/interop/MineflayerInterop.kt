@@ -630,7 +630,7 @@ class MineflayerOptionsImpl(
 ): Mineflayer.BotOptions*/
 
 data class MineflayerOptions(
-	var username: String,
+	var username: String? = null,
 	var port: Number = 25565,
 	var password: String? = null,
 	var host: String = "localhost",

@@ -4,6 +4,7 @@ import dev.binclub.bincommander.MinecraftUserConfig
 import dev.binclub.bincommander.Serializable
 import dev.binclub.bincommander.alsoDeserialize
 import dev.binclub.bincommander.alsoSerialize
+import dev.binclub.bincommander.commands.AlteningInfo
 import dev.binclub.bincommander.interop.Mineflayer.Bot
 
 /**

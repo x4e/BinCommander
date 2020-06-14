@@ -10,13 +10,18 @@ import dev.binclub.bincommander.utils.Timer
  */
 class SpammerModule(instance: MinecraftUserConfig) : ToggleableModule("Spammer", instance) {
 	private val timer = Timer()
+	private var spawned = false
     
     var spamDelay: Int = 10000 // 10 seconds
     var messages: MutableList<String> = ArrayList()
 	
 	override fun onBotStart(bot: Mineflayer.Bot) {
+		bot.on("spawn") {
+			spawned = true
+			timer.reset()
+		}
 		bot._client.on("packet") { data: Any, packetMeta: MinecraftProtocol.PacketMeta ->
-			if (this.enabled) {
+			if (this.enabled && spawned) {
 				if (timer.passed(spamDelay.toDouble() * 1000)) {
 					bot.chat(messages.random())
 					timer.reset()

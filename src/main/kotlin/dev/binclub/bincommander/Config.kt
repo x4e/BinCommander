@@ -3,6 +3,7 @@
 package dev.binclub.bincommander
 
 import dev.binclub.bincommander.commands.CommandManager
+import dev.binclub.bincommander.integration.AlteningAccount
 import dev.binclub.bincommander.interop.Fs
 import dev.binclub.bincommander.interop.Mineflayer
 import dev.binclub.bincommander.modules.ModuleManager
@@ -98,8 +99,10 @@ class UserConfig: Serializable {
  * Represents the configuration for an MC Account. This MC Account can be owned by multiple UserConfigs
  */
 class MinecraftUserConfig: Serializable {
-	lateinit var user: String
-	lateinit var pass: String
+	var user: String? = null
+	var pass: String? = null
+	var alteningToken: String? = null
+	var alteningAccount: AlteningAccount? = null
 	var clientToken: String? = null
 	var accessToken: String? = null
 	var mcName: String? = null
@@ -116,6 +119,7 @@ class MinecraftUserConfig: Serializable {
 	override fun deserialize(obj: dynamic) {
 		this.user = obj.user
 		this.pass = obj.pass
+		this.alteningToken = obj.alteningToken
 		this.clientToken = obj.clientToken
 		this.accessToken = obj.accessToken
 		this.mcName = obj.mcName
@@ -125,6 +129,7 @@ class MinecraftUserConfig: Serializable {
 	override fun serialize(obj: dynamic) {
 		obj.user = this.user
 		obj.pass = this.pass
+		obj.alteningToken = this.alteningToken
 		obj.clientToken = this.clientToken
 		obj.accessToken = this.accessToken
 		obj.mcName = this.mcName

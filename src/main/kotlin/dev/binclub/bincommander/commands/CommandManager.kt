@@ -43,7 +43,8 @@ class CommandManager(val instance: MinecraftUserConfig): Serializable {
 		TpsCommand(instance),
 		VitalsCommand(instance),
 		CoordsCommand(instance),
-		SpamCommand(instance)
+		SpamCommand(instance),
+		AlteningInfo(instance)
 	)
 	
 	operator fun <T: Command> get(klass: JsClass<T>): T = commands.firstOrNull { it::class.js == klass }!! as T

@@ -1,6 +1,7 @@
 package dev.binclub.bincommander.commands
 
 import dev.binclub.bincommander.MinecraftUserConfig
+import dev.binclub.bincommander.integration.AlteningDataRetriever
 import dev.binclub.bincommander.interop.*
 import dev.binclub.bincommander.utils.betterToString
 
@@ -22,15 +23,20 @@ class ConnectCommand(user: MinecraftUserConfig): Command("connect", user) {
 					}
 				})
 				try {
-					Mineflayer.createBot(MineflayerOptions(
-						username = user.user,
-						password = user.pass,
-						host = ip,
-						clientToken = user.clientToken,
-						accessToken = user.accessToken,
-						version = "1.12.2",
-						viewDistance = "far"
-					).asDynamic()).let { bot ->
+					val username = user.user
+					val password = user.pass
+					
+					Mineflayer.createBot(
+						MineflayerOptions(
+							username = username,
+							password = password,
+							host = ip,
+							clientToken = user.clientToken,
+							accessToken = user.accessToken,
+							version = "1.12.2",
+							viewDistance = "far"
+						).asDynamic()
+					).let { bot ->
 						println("Created bot")
 						user.setupNewBot(bot)
 						bot.on("error") { err: Any ->
