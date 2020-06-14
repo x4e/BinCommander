@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     implementation npm("discord.js", "12.2.0")
-    implementation npm("mineflayer", "2.15.0")
+    implementation npm("mineflayer", "2.19.2")
     implementation npm("prismarine-tokens", "1.0.3")
     implementation npm("exit-hook", "2.2.0")
     implementation npm("xmlhttprequest")

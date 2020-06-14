@@ -44,12 +44,15 @@ object BinCommander {
 					// User is not registered
 				} else {
 					val command = message.content.substringBefore(' ').substring(config.discord.prefix.length)
-					val args = message.content.substringAfter(' ').split(' ')
+					var args = message.content.substringAfter(' ').split(' ')
 					val username = if (args.isNotEmpty()) args[0] else null
 					val mcAccount = if (username != null) user.mcAccounts.firstOrNull { it.mcName == username } else null
 					if (mcAccount == null) {
 						CommandManager.invokeStaticCommand(message, command, args)
 					} else {
+						if (args.isNotEmpty()) {
+							args = args.subList(1, args.size)
+						}
 						mcAccount.commands.invoke(message, command, args)
 					}
 				}

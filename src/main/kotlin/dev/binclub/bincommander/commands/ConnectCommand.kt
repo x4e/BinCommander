@@ -11,9 +11,9 @@ import dev.binclub.bincommander.utils.betterToString
 class ConnectCommand(user: MinecraftUserConfig): Command("connect", user) {
 	@Suppress("UnsafeCastFromDynamic")
 	override fun invoke(message: Discord.Message, args: List<String>) {
-		if (args.size >= 2) {
-			val ip = args[1]
-			val port = if (args.size > 2) args[2].toInt() else 25565
+		if (args.size >= 1) {
+			val ip = args[0]
+			val port = if (args.size > 1) args[1].toInt() else 25565
 			
 			if (user.clientToken != null) {
 				val originMessage = message.reply("", MessageOptions().apply {
@@ -26,18 +26,20 @@ class ConnectCommand(user: MinecraftUserConfig): Command("connect", user) {
 					val username = user.user
 					val password = user.pass
 					
+					val options = MineflayerOptions(
+						username = username,
+						password = password,
+						host = ip,
+						clientToken = user.clientToken,
+						accessToken = user.accessToken,
+						version = "1.12.2",
+						viewDistance = "far"
+					).asDynamic()
 					Mineflayer.createBot(
-						MineflayerOptions(
-							username = username,
-							password = password,
-							host = ip,
-							clientToken = user.clientToken,
-							accessToken = user.accessToken,
-							version = "1.12.2",
-							viewDistance = "far"
-						).asDynamic()
+						options
 					).let { bot ->
 						println("Created bot")
+						bot.asDynamic()["options"] = options
 						user.setupNewBot(bot)
 						bot.on("error") { err: Any ->
 							originMessage.then {
