@@ -14,7 +14,8 @@ class ModuleManager(val instance: MinecraftUserConfig): Serializable {
 	val modules = arrayOf<Module>(
 		TpsCounterModule(instance),
 		SpammerModule(instance),
-		AutoReconnectModule(instance)
+		AutoReconnectModule(instance),
+		EchoModule(instance)
 	)
 	
 	operator fun <T: Module> get(klass: JsClass<T>): T = modules.firstOrNull { it::class.js == klass }!! as T

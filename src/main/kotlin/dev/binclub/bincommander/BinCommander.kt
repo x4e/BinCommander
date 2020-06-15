@@ -46,7 +46,7 @@ object BinCommander {
 					val command = message.content.substringBefore(' ').substring(config.discord.prefix.length)
 					var args = message.content.substringAfter(' ').split(' ')
 					val username = if (args.isNotEmpty()) args[0] else null
-					val mcAccount = if (username != null) user.mcAccounts.firstOrNull { it.mcName == username } else null
+					val mcAccount = if (username != null) user.mcAccounts.firstOrNull { it.mcName.equals(username, true) } else null
 					if (mcAccount == null) {
 						CommandManager.invokeStaticCommand(message, command, args)
 					} else {
